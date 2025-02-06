@@ -28,7 +28,13 @@ include('header.php');
         </span>
     </div>
     <button type="submit" class="w-full p-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">Register</button>
+
+    <div class="text-center mt-5">
+        <a href="index.php" class="w-full p-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition inline-block">Go to Login</a>
+    </div>
 </form>
+
+
 </div>
 
 <script>
