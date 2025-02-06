@@ -5,6 +5,9 @@ if(!$_SESSION['isLogin']){
     header("Location: index.php");
     exit;
 }
+if(isset($_GET['code'])){
+    $_GET['code']='todo';
+}
 include("includes/headbar.php");
 include("includes/sidebar.php");
 // header.php included anywhere needs body html closing tags
