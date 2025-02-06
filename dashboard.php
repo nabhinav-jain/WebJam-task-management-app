@@ -35,9 +35,21 @@ curl_close($ch);
 
 <div class="main-content-container">
     <?php
-    if ($_GET['code'] == 'todo') {
-
-    } else if ($_GET['code'] == 'notes') {
+if (isset($_GET['code']) && $_GET['code'] == 'todo') {
+    if (isset($todoArray['status']) && $todoArray['status'] === 'success' && isset($todoArray['todos'])) {
+        echo '<ul>';
+        foreach ($todoArray['todos'] as $todo) {
+            echo '<li>';
+            echo '<strong>Todo:</strong> ' . htmlspecialchars($todo['todo']) . '<br>';
+            echo '<strong>Created At:</strong> ' . htmlspecialchars($todo['created_at']) . '<br>';
+            echo '<strong>Due Time:</strong> ' . htmlspecialchars($todo['due_time']);
+            echo '</li><br>';
+        }
+        echo '</ul>';
+    } else {
+        echo 'No todos found!';
+    }
+}else if (isset($_GET['code'])&&$_GET['code'] == 'notes') {
 
     }
     ?>

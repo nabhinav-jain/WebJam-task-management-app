@@ -1,4 +1,4 @@
-<div class="flex w-[15vw]" style="z-index:-1; position:absolute;">
+<div class="flex w-[15vw]" style="z-index:10; position:fixed;">
     <div class="h-screen w-full bg-gray-800 text-white p-4 flex flex-col items-start">
         <a href="dashboard.php?code=todo" class="flex items-center space-x-2 py-2 px-4 w-full hover:bg-gray-700 rounded-md">
             <i class="bi bi-list-check text-xl"></i>
