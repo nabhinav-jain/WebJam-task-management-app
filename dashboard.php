@@ -58,11 +58,55 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
             echo '<td class="px-4 py-2">' . htmlspecialchars($todo['due_time']) . '</td>';
             echo '<td class="px-4 py-2">' . date('Y-m-d H:i') . '</td>'; 
             echo '<td class="px-4 py-2 text-center">';
-            echo '<input type="checkbox" ' . ($todo['status'] == 1 ? 'checked disabled' : '') . ' class="w-5 h-5">';
+            echo '<input type="checkbox" class="w-5 h-5 cursor-pointer checboxToDo" 
+            onclick="showModal(' . htmlspecialchars($todo['id']) . ')" 
+            data-id="' . htmlspecialchars($todo['id']) . '" 
+            ' . ($todo['status'] == 1 ? 'checked disabled' : '') . '>';
+    
             echo '</td>';
             echo '</tr>';
         }
 
+
+        ?>
+        <div id="confirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="w-[300px] bg-red-600 text-white p-4 rounded-lg shadow-lg">
+        <p>Are you sure you want to check this task as done?</p>
+        <form method="POST" action="api/checkTodo.php">
+            <input type="hidden" name="modalTodoId" id="modalTodoId">
+            <div class="mt-4 flex justify-between">
+                <button type="submit" class="bg-white text-red-600 px-4 py-2 rounded">Yes</button>
+                <button type="button" class="bg-gray-700 px-4 py-2 rounded" onclick="hideModal()">No</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function showModal(key){
+        const confirmModal= document.getElementById('confirmModal');
+        confirmModal.classList.remove('hidden');
+
+        checkToDoId= document.getElementById('modalTodoId');
+        checkToDoId.value=key;
+
+    }
+    function hideModal() {
+    const confirmModal = document.getElementById('confirmModal');
+    confirmModal.classList.add('hidden');
+
+    let todoId = document.getElementById('modalTodoId').value;
+    const checboxToDo = document.querySelector(`.checboxToDo[data-id='${todoId}']`);
+
+    if (checboxToDo) { 
+        checboxToDo.checked = false;
+    }
+}
+
+</script>
+
+        <?php
         echo '</tbody>';
         echo '</table>';
         echo '</div>';
