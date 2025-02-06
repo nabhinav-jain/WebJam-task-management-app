@@ -57,7 +57,7 @@ if (isset($_GET['code']) && $_GET['code'] == 'todo') {
             echo '<td class="px-4 py-2">' . htmlspecialchars($todo['due_time']) . '</td>';
             echo '<td class="px-4 py-2">' . date('Y-m-d H:i') . '</td>'; 
             echo '<td class="px-4 py-2 text-center">';
-            echo '<input type="checkbox" ' . ($todo['status'] == 1 ? 'checked' : '') . ' class="w-5 h-5">';
+            echo '<input type="checkbox" ' . ($todo['status'] == 1 ? 'checked disabled' : '') . ' class="w-5 h-5">';
             echo '</td>';
             echo '</tr>';
         }
