@@ -37,19 +37,39 @@ curl_close($ch);
     <?php
 if (isset($_GET['code']) && $_GET['code'] == 'todo') {
     if (isset($todoArray['status']) && $todoArray['status'] === 'success' && isset($todoArray['todos'])) {
-        echo '<ul>';
+        echo '<div class="p-4">';
+        echo '<table class="w-full text-white bg-gray-800 border border-gray-700 rounded-lg">';
+        echo '<thead>';
+        echo '<tr class="bg-red-600 text-white text-left">';
+        echo '<th class="px-4 py-2">Todo</th>';
+        echo '<th class="px-4 py-2">Created At</th>';
+        echo '<th class="px-4 py-2">Due Time</th>';
+        echo '<th class="px-4 py-2">Current Time</th>';
+        echo '<th class="px-4 py-2">Status</th>';
+        echo '</tr>';
+        echo '</thead>';
+        echo '<tbody>';
+
         foreach ($todoArray['todos'] as $todo) {
-            echo '<li>';
-            echo '<strong>Todo:</strong> ' . htmlspecialchars($todo['todo']) . '<br>';
-            echo '<strong>Created At:</strong> ' . htmlspecialchars($todo['created_at']) . '<br>';
-            echo '<strong>Due Time:</strong> ' . htmlspecialchars($todo['due_time']);
-            echo '</li><br>';
+            echo '<tr class="border-b border-gray-700">';
+            echo '<td class="px-4 py-2">' . htmlspecialchars($todo['todo']) . '</td>';
+            echo '<td class="px-4 py-2">' . htmlspecialchars($todo['created_at']) . '</td>';
+            echo '<td class="px-4 py-2">' . htmlspecialchars($todo['due_time']) . '</td>';
+            echo '<td class="px-4 py-2">' . date('Y-m-d H:i') . '</td>'; 
+            echo '<td class="px-4 py-2 text-center">';
+            echo '<input type="checkbox" ' . ($todo['status'] == 1 ? 'checked' : '') . ' class="w-5 h-5">';
+            echo '</td>';
+            echo '</tr>';
         }
-        echo '</ul>';
+
+        echo '</tbody>';
+        echo '</table>';
+        echo '</div>';
     } else {
-        echo 'No todos found!';
+        echo '<p class="text-white text-center">No todos found!</p>';
     }
-}else if (isset($_GET['code'])&&$_GET['code'] == 'notes') {
+}
+else if (isset($_GET['code'])&&$_GET['code'] == 'notes') {
 
     }
     ?>
