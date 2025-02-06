@@ -1,5 +1,6 @@
 <?php
 session_start();
+$baseurl="http://localhost/webjamapp/";
 ?>
 
 <!DOCTYPE html>
