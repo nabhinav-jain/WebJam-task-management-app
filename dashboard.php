@@ -5,9 +5,7 @@ if(!$_SESSION['isLogin']){
     header("Location: index.php");
     exit;
 }
-if(isset($_GET['code'])){
-    $_GET['code']='todo';
-}
+
 include("includes/headbar.php");
 include("includes/sidebar.php");
 // header.php included anywhere needs body html closing tags
@@ -38,7 +36,7 @@ curl_close($ch);
 
 <div class="main-content-container">
     <?php
-if (isset($_GET['code']) && $_GET['code'] == 'todo') {
+if (!isset($_GET['code']) || $_GET['code']=='todo') {
     if (isset($todoArray['status']) && $todoArray['status'] === 'success' && isset($todoArray['todos'])) {
         echo '<div class="p-4">';
         echo '<table class="w-full text-white bg-gray-800 border border-gray-700 rounded-lg">';
@@ -72,7 +70,7 @@ if (isset($_GET['code']) && $_GET['code'] == 'todo') {
         echo '<p class="text-white text-center">No todos found!</p>';
     }
 }
-else if (isset($_GET['code'])&&$_GET['code'] == 'notes') {
+else if (isset($_GET['code'])) {
 
     }
     ?>
