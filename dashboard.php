@@ -72,7 +72,7 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
         <div id="confirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
     <div class="w-[300px] bg-red-600 text-white p-4 rounded-lg shadow-lg">
         <p>Are you sure you want to check this task as done?</p>
-        <form method="POST" action="api/checkTodo.php">
+        <form method="POST" id="checkTodoForm" >
             <input type="hidden" name="modalTodoId" id="modalTodoId">
             <div class="mt-4 flex justify-between">
                 <button type="submit" class="bg-white text-red-600 px-4 py-2 rounded">Yes</button>
@@ -103,6 +103,58 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
         checboxToDo.checked = false;
     }
 }
+
+document.getElementById('checkTodoForm').addEventListener('submit', function (e) {
+    e.preventDefault(); 
+    console.log("Form submission intercepted");
+
+    const formData = new FormData(this);
+    console.log("Form data created:", formData);
+
+    fetch('api/checkTodo.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        console.log("Response received from the server:", response);
+        return response.json(); 
+    })
+    .then(data => {
+        console.log("Parsed JSON data:", data);
+
+        if (data.status === 'success') {
+            console.log("Status is success, showing success toast");
+            Toastify({
+                text: data.message,
+                backgroundColor: "green",
+                duration: 3000
+               
+            }).showToast();
+            setTimeout(()=>  window.location.reload(),500)
+          
+        } else {
+            console.log("Status is not success, showing failure toast");
+            Toastify({
+                text: data.message,
+                backgroundColor: "red",
+                duration: 3000
+            }).showToast();
+        }
+        hideModal();
+        console.log("Modal hidden after form submission");
+    })
+    .catch(error => {
+        console.log("Error occurred during fetch:", error);
+        Toastify({
+            text: "An error occurred. Please try again.",
+            backgroundColor: "red",
+            duration: 3000
+        }).showToast();
+        hideModal();
+        console.log("Modal hidden due to error");
+    });
+});
+
 
 </script>
 
