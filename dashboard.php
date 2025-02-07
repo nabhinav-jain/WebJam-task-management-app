@@ -38,7 +38,9 @@ curl_close($ch);
     <?php
 if (!isset($_GET['code']) || $_GET['code']=='todo') {
     if (isset($todoArray['status']) && $todoArray['status'] === 'success' && isset($todoArray['todos'])) {
-        echo '<div class="p-4">';
+  
+        
+echo '<div class="p-4">';
         echo '<table class="w-full text-white bg-gray-800 border border-gray-700 rounded-lg">';
         echo '<thead>';
         echo '<tr class="bg-red-600 text-white text-left">';
@@ -47,6 +49,7 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
         echo '<th class="px-4 py-2">Due Time</th>';
         echo '<th class="px-4 py-2">Current Time</th>';
         echo '<th class="px-4 py-2">Status</th>';
+        echo '<th class="px-4 py-2 text-center">Action</th>';
         echo '</tr>';
         echo '</thead>';
         echo '<tbody>';
@@ -64,9 +67,14 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
             ' . ($todo['status'] == 1 ? 'checked disabled' : '') . '>';
     
             echo '</td>';
+
+            echo '<td class="px-4 py-2 text-center">';
+            echo '<button onclick="showDeleteModal('. htmlspecialchars($todo['id']).')" class="text-red-500" > ';
+            echo '<i class="bi bi-trash-fill text-xl"></i>';
+            echo '</button>';
+            echo '</td>';
             echo '</tr>';
         }
-
 
         ?>
         <div id="confirmModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
@@ -82,8 +90,32 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
     </div>
 </div>
 
+<div id="confirmDeleteModal" class="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
+    <div class="w-[300px] bg-red-600 text-white p-4 rounded-lg shadow-lg">
+        <p>Are you sure you want to delete this Task?</p>
+        <form method="POST" id="deleteTodoForm" >
+            <input type="hidden" name="deleteTodoModal" id="deleteTodoModal">
+            <div class="mt-4 flex justify-between">
+                <button type="submit" class="bg-white text-red-600 px-4 py-2 rounded">Yes</button>
+                <button type="button" class="bg-gray-700 px-4 py-2 rounded" onclick="hideModal()">No</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 
 <script>
+
+function showDeleteModal(key){
+    let confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    confirmDeleteModal.classList.remove('hidden');
+    let deleteTodoModal = document.getElementById('deleteTodoModal'); 
+    deleteTodoModal.value = key;
+}
+
+
+
+
     function showModal(key){
         const confirmModal= document.getElementById('confirmModal');
         confirmModal.classList.remove('hidden');
@@ -96,6 +128,9 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
     const confirmModal = document.getElementById('confirmModal');
     confirmModal.classList.add('hidden');
 
+    let confirmDeleteModal= document.getElementById('confirmDeleteModal');
+    confirmDeleteModal.classList.add('hidden');
+
     let todoId = document.getElementById('modalTodoId').value;
     const checboxToDo = document.querySelector(`.checboxToDo[data-id='${todoId}']`);
 
@@ -103,6 +138,44 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
         checboxToDo.checked = false;
     }
 }
+
+document.getElementById('deleteTodoForm').addEventListener('submit',function(event){
+     event.preventDefault();
+
+     const formData=new FormData(this);
+     fetch('api/deleteTodo.php',{
+        method:'post',
+        body:formData
+     }).then(response=>response.json()).then((data)=>{
+
+        if(data.status=='success'){
+            Toastify({
+                text: data.message,
+                backgroundColor: "green",
+                duration: 3000
+               
+            }).showToast();
+            setTimeout(()=>  window.location.reload(),500)
+        }else{
+            Toastify({
+                text: data.message,
+                backgroundColor: "red",
+                duration: 3000
+               
+            }).showToast();
+        }
+     }).catch(err=>{
+        Toastify({
+                text: "Internal server error",
+                backgroundColor: "red",
+                duration: 3000
+               
+            }).showToast();
+     }); 
+
+})
+
+
 
 document.getElementById('checkTodoForm').addEventListener('submit', function (e) {
     e.preventDefault(); 
