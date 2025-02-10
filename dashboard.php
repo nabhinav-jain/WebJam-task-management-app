@@ -39,6 +39,14 @@ curl_close($ch);
 if (!isset($_GET['code']) || $_GET['code']=='todo') {
     if (isset($todoArray['status']) && $todoArray['status'] === 'success' && isset($todoArray['todos'])) {
   
+
+    ?>
+
+    <div class="ml-5 bg-transparent border-2 border-red-400 p-2 w-[3vw] flex items-center justify-center" >
+        <button class="text-red-600 text-lg cursor-pointer"><i class="bi bi-plus"></i></button>
+    </div>
+
+    <?php
         
 echo '<div class="p-4">';
         echo '<table class="w-full text-white bg-gray-800 border border-gray-700 rounded-lg">';
