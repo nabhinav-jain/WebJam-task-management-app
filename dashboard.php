@@ -183,6 +183,46 @@ function showDeleteModal(key){
     }
 }
 
+
+document.getElementById('newTaskForm').addEventListener('submit',function(event){
+     event.preventDefault();
+
+     const formData=new FormData(this);
+     fetch('api/createTodo.php',{
+        method:'post',
+        body:formData
+     }).then(response=>response.json()).then((data)=>{
+
+        if(data.status=='success'){
+            Toastify({
+                text: data.message,
+                backgroundColor: "green",
+                duration: 3000
+               
+            }).showToast();
+            setTimeout(()=>  window.location.reload(),500)
+        }else{
+            Toastify({
+                text: data.message,
+                backgroundColor: "red",
+                duration: 3000
+               
+            }).showToast();
+        }
+     }).catch(err=>{
+        Toastify({
+                text: "Internal server error",
+                backgroundColor: "red",
+                duration: 3000
+               
+            }).showToast();
+     }); 
+
+})
+
+
+
+
 document.getElementById('deleteTodoForm').addEventListener('submit',function(event){
      event.preventDefault();
 
