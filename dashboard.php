@@ -42,9 +42,35 @@ if (!isset($_GET['code']) || $_GET['code']=='todo') {
 
     ?>
 
-    <div class="ml-5 bg-transparent border-2 border-red-400 p-2 w-[3vw] flex items-center justify-center" >
-        <button class="text-red-600 text-lg cursor-pointer"><i class="bi bi-plus"></i></button>
+
+    <div class="ml-5 bg-transparent border-2 border-red-500 p-2 w-[3vw] flex items-center justify-center" onclick="openNewModal()">
+        <button class="text-red-700 text-xl cursor-pointer" >
+            <i class="bi bi-plus-lg"></i>
+        </button>
     </div>
+
+
+<div id="newTaskModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm hidden">
+    <div class="w-[400px] bg-white p-6 rounded-xl shadow-2xl">
+        <h2 class="text-xl font-semibold text-red-600 mb-4">Create New Task</h2>
+        <form method="POST" id="newTaskForm">
+            <div class="mb-3">
+                <label for="taskName" class="block text-red-600 font-medium">Task Name:</label>
+                <input type="text" id="taskName" name="taskName" required class="w-full p-2 border rounded mt-1 outline-none focus:ring focus:ring-red-600">
+            </div>
+            <div class="mb-4">
+                <label for="taskDueTime" class="block text-red-600 font-medium">Due Time:</label>
+                <input type="datetime-local" id="taskDueTime" name="taskDueTime" required class="w-full p-2 border rounded mt-1 focus:ring outline-none focus:ring-red-600">
+            </div>
+            <div class="flex justify-end space-x-3">
+                <button type="button" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-red-600" onclick="closeNewModal()">Cancel</button>
+                <button type="submit" class="bg-gray-700 text-white px-4 py-2 rounded hover:bg-red-600">Add Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
 
     <?php
         
@@ -113,6 +139,16 @@ echo '<div class="p-4">';
 
 
 <script>
+
+function openNewModal() {
+        document.getElementById('newTaskModal').classList.remove('hidden');
+    }
+
+    function closeNewModal() {
+        document.getElementById('newTaskModal').classList.add('hidden');
+    }
+
+
 
 function showDeleteModal(key){
     let confirmDeleteModal = document.getElementById('confirmDeleteModal');
